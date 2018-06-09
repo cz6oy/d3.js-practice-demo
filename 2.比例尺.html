@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+    var dataset = [1.2, 2.3, 0.9, 1.5, 3.3];
+    //将 dataset 中最小的值，映射成 0；将最大的值，映射成 300。
+
+    var min = d3.min(dataset);
+    var max = d3.max(dataset);
+
+    var linear = d3.scale.linear()
+        .domain([min, max])
+        .range([0, 300]);
+
+        linear(0.9);    //返回 0
+        linear(2.3);    //返回 175
+        linear(3.3);    //返回 300
+</script>
+</html>

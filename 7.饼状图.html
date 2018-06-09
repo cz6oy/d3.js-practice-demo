@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+    var width = 400;
+    var height = 400;
+    var dataset = [ 30 , 10 , 43 , 55 , 13 ];
+
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width",width)
+        .attr("height",height);
+
+    // 定义布局
+    var pie = d3.layout.pie();
+
+    // pie 可以当做函数使用，将数组 dataset 作为 pie() 的参数，返回值给 piedata
+    var piedata = pie(dataset);
+    console.log(piedata);
+
+    var outerRadius = 150;  //外半径
+    var innerRadius = 0;    //内半径
+
+    var arc = d3.svg.arc()  //弧生成器
+        .outerRadius(outerRadius)
+        .innerRadius(innerRadius);
+
+    //绘制图形
+    var arcs = svg.selectAll("g")
+        .data(piedata)
+        .enter()
+        .append("g")
+        .attr("transform","translate("+ (width/2) +","+ (width/2) +")");
+
+    var color = d3.scale.category10();  //有十种颜色的颜色比例尺
+    
+    //每个 g 元素，添加 path
+    arcs.append("path")
+        .attr("fill",function(d,i){
+            return color(i);
+        })
+        .attr("d",function(d){
+            return arc(d);   //调用弧生成器，得到路径值
+        });
+
+    //arc.centroid(d) 能算出弧线的中心
+    arcs.append("text")
+        .attr("transform",function(d){
+            return "translate(" + arc.centroid(d) + ")";
+        })
+        .attr("text-anchor","middle")
+        .text(function(d){
+            return d.data;
+        });
+</script>
+</html>
